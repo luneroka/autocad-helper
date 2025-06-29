@@ -1,0 +1,82 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #f4f4f4;
+  font-size: 20px;
+}
+
+h1 {
+  color: rgb(87, 12, 172);
+  margin-top: 64px;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+input[type='text'] {
+  width: 300px;
+  padding: 10px;
+  font-size: 1em;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 300px;
+  padding: 10px 20px;
+  font-size: 1em;
+  font-weight: bold;
+  color: rgb(67, 10, 140);
+  background-color: #f4f4f4;
+  border: 2px solid rgb(67, 10, 140);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  color: white;
+  background-color: rgb(87, 12, 172);
+}
+
+#response {
+  margin: 64px 96px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 64px;
+}
+
+#chemin,
+#commande {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 64px;
+  background-color: white;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+.response-type {
+  font-weight: bold;
+  color: rgb(87, 12, 172);
+}
+
+.actual-response {
+  font-size: 1.5rem;
+}
