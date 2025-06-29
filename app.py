@@ -58,7 +58,7 @@ def index():
         return redirect(url_for('index'))
     chemin = session.pop('chemin', "")
     commande = session.pop('commande', "")
-    keyword = session.pop('keyword', "")
+    keyword = ""
     return render_template("index.html", chemin=chemin, commande=commande, keyword=keyword)
 
 if __name__ == "__main__":
