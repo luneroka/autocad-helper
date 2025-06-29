@@ -6,7 +6,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-from dotenv import load_dotenv
 
 app = Flask(__name__)
 
@@ -21,12 +20,22 @@ def generate_response(prompt):
 
 @app.route("/", methods=["GET", "POST"])
 def index():
-    response = ""
+    chemin = ""
+    commande = ""
     if request.method == "POST":
         user_input = request.form["keyword"]
-        prompt = f"L'utilisateur veut accéder à '{user_input}' dans AutoCAD sur Mac. Donne uniquement le chemin d'accès via la barre des menus, puis la commande texte à saisir dans la ligne de commande si elle existe."
+        prompt = (
+            f"L'utilisateur veut accéder à '{user_input}' dans AutoCAD sur Mac. "
+            "Donne uniquement le chemin d'accès via la barre des menus, puis la commande texte en français à saisir dans la ligne de commande si elle existe, "
+            "en séparant les deux parties par un saut de ligne. "
+            "Commence la première partie directement par le chemin, puis à la ligne suivante commence la commande directement, sans texte introductif."
+        )
         response = generate_response(prompt)
-    return render_template("index.html", response=response)
+        # Split on the first line break
+        parts = response.split('\n', 1)
+        chemin = parts[0].strip() if len(parts) > 0 else ""
+        commande = parts[1].strip() if len(parts) > 1 else ""
+    return render_template("index.html", chemin=chemin, commande=commande)
 
 if __name__ == "__main__":
     app.run(debug=True)

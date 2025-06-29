@@ -13,10 +13,14 @@
       <button type="submit">Chercher</button>
     </form>
 
-    {% if response %}
-    <div class="response">
-      <h3>Résultat :</h3>
-      <p>{{ response|safe }}</p>
+    {% if chemin or commande %}
+    <div id="chemin">
+      <p class="response-type">Chemin d'accès :</p>
+      <p class="actual-response">{{ chemin|replace('\n', '<br />')|safe }}</p>
+    </div>
+    <div id="commande">
+      <p class="response-type">Ligne de comnmande :</p>
+      <p class="actual-response">{{ commande|replace('\n', '<br />')|safe }}</p>
     </div>
     {% endif %}
   </body>
