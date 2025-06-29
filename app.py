@@ -8,15 +8,15 @@ load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = Flask(__name__)
-app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev")
-APP_PASSCODE = os.getenv("APP_PASSCODE")  # Default for dev
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
+APP_PASSCODE = os.getenv("APP_PASSCODE")
 
 def generate_response(keyword):
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
             {"role": "system", "content": "Expert AutoCAD Mac. Réponds par chemin d'accès puis ligne de commande si elle existe."},
-            {"role": "user", "content": f"Pour '{keyword}' dans AutoCAD Mac, donne chemin d'accès puis ligne de commande (s'il y en a une), séparés par un saut de ligne, sans texte introductif."}
+            {"role": "user", "content": f"Pour '{keyword}' dans AutoCAD Mac, donne chemin d'accès puis ligne de commande en français (s'il y en a une), séparés par un saut de ligne, sans texte introductif."}
         ],
         temperature=0.3
     )
