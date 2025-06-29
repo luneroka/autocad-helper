@@ -4,7 +4,7 @@
 
 ## Screenshot
 
-![Screenshot](static/https://github.com/luneroka/ma-bibli/blob/main/static/autocad-helper-preview.png)
+![Screenshot](https://github.com/luneroka/autocad-helper/blob/main/static/autocad-helper-preview.png)
 
 ## 📚 Features
 
