@@ -2,6 +2,8 @@ import os
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from openai import OpenAI
 from dotenv import load_dotenv
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 load_dotenv()
 
@@ -10,6 +12,12 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 APP_PASSCODE = os.getenv("APP_PASSCODE")
+
+limiter = Limiter(
+    get_remote_address,
+    app=app,
+    default_limits=["100 per hour"]
+)
 
 def generate_response(keyword):
     response = client.chat.completions.create(
@@ -23,6 +31,7 @@ def generate_response(keyword):
     return response.choices[0].message.content
 
 @app.route("/login", methods=["GET", "POST"])
+@limiter.limit("5 per minute")  # 5 attempts per minute per IP
 def login():
     if request.method == "POST":
         passcode = request.form.get("passcode", "")
