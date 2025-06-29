@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Connexion</title>
+  </head>
+  <body>
+    <h2>Entrer le code d'accès</h2>
+    {% with messages = get_flashed_messages() %} {% if messages %}
+    <p style="color: red">{{ messages[0] }}</p>
+    {% endif %} {% endwith %}
+    <form method="POST">
+      <input
+        type="password"
+        name="passcode"
+        placeholder="Code d'accès"
+        required
+      />
+      <button type="submit">Valider</button>
+    </form>
+  </body>
+</html>

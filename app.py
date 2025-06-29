@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from openai import OpenAI
 from dotenv import load_dotenv
 
@@ -9,6 +9,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev")
+APP_PASSCODE = os.getenv("APP_PASSCODE")  # Default for dev
 
 def generate_response(keyword):
     response = client.chat.completions.create(
@@ -21,8 +22,20 @@ def generate_response(keyword):
     )
     return response.choices[0].message.content
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        passcode = request.form.get("passcode", "")
+        if passcode == APP_PASSCODE:
+            session["authenticated"] = True
+            return redirect(url_for("index"))
+        flash("Code incorrect.")
+    return render_template("login.html")
+
 @app.route("/", methods=["GET", "POST"])
 def index():
+    if not session.get("authenticated"):
+        return redirect(url_for("login"))
     if request.method == "POST":
         keyword = request.form["keyword"]
         response = generate_response(keyword)
