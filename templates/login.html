@@ -2,10 +2,14 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='login.css') }}"
+    />
     <title>Connexion</title>
   </head>
   <body>
-    <h2>Entrer le code d'accès</h2>
+    <h2>Entrer le mot de passe</h2>
     {% with messages = get_flashed_messages() %} {% if messages %}
     <p style="color: red">{{ messages[0] }}</p>
     {% endif %} {% endwith %}
@@ -13,7 +17,7 @@
       <input
         type="password"
         name="passcode"
-        placeholder="Code d'accès"
+        placeholder="Mot de passe"
         required
       />
       <button type="submit">Valider</button>
