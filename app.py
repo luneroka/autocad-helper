@@ -10,12 +10,12 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 app = Flask(__name__)
 app.secret_key = os.getenv("FLASK_SECRET_KEY", "dev")
 
-def generate_response(prompt):
+def generate_response(keyword):
     response = client.chat.completions.create(
         model="gpt-4o",
         messages=[
-            {"role": "system", "content": "Tu es un expert AutoCAD Mac qui répond avec précision au chemin d'accès via la barre des menus et à la commande de la ligne de commande autoCAD associée, si elle existe."},
-            {"role": "user", "content": prompt}
+            {"role": "system", "content": "Expert AutoCAD Mac. Réponds par chemin d'accès puis ligne de commande si elle existe."},
+            {"role": "user", "content": f"Pour '{keyword}' dans AutoCAD Mac, donne chemin d'accès puis ligne de commande (s'il y en a une), séparés par un saut de ligne, sans texte introductif."}
         ],
         temperature=0.3
     )
@@ -25,16 +25,13 @@ def generate_response(prompt):
 def index():
     if request.method == "POST":
         keyword = request.form["keyword"]
-        prompt = (
-            f"L'utilisateur veut accéder à '{keyword}' dans AutoCAD sur Mac. "
-            "Donne uniquement le chemin d'accès via la barre des menus, puis la commande texte en français à saisir dans la ligne de commande si elle existe, "
-            "en séparant les deux parties par un saut de ligne. "
-            "Commence la première partie directement par le chemin, puis à la ligne suivante commence la commande directement, sans texte introductif."
-        )
-        response = generate_response(prompt)
+        response = generate_response(keyword)
         parts = response.split('\n', 1)
         session['chemin'] = parts[0].strip() if len(parts) > 0 else ""
-        session['commande'] = parts[1].strip() if len(parts) > 1 else ""
+        commande = parts[1].strip() if len(parts) > 1 else ""
+        if not commande:
+            commande = "Commande non trouvée"
+        session['commande'] = commande
         session['keyword'] = keyword
         return redirect(url_for('index'))
     chemin = session.pop('chemin', "")
