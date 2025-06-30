@@ -66,10 +66,11 @@ button:hover {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  padding: 64px;
+  padding: 64px 16px;
   background-color: white;
   border-radius: 8px;
   border: 1px solid #ccc;
+  width: 80%;
 }
 
 .response-type {
@@ -79,4 +80,41 @@ button:hover {
 
 .actual-response {
   font-size: 1.5rem;
+}
+
+@media (max-width: 1050px) {
+  h1 {
+    font-size: 1.5rem;
+    margin-top: 16px;
+    margin-bottom: 16px;
+  }
+
+  form {
+    gap: 10px;
+  }
+
+  input[type='text'] {
+    font-size: 0.9em;
+  }
+
+  button {
+    font-size: 0.9em;
+  }
+
+  #response {
+    flex-direction: column;
+    margin: 16px;
+    gap: 16px;
+  }
+
+  #chemin,
+  #commande {
+    width: 100%;
+    padding: 16px;
+    gap: 8px;
+  }
+
+  .actual-response {
+    font-size: 1.2rem;
+  }
 }
