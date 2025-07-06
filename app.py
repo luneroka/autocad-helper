@@ -5,11 +5,13 @@ from dotenv import load_dotenv
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 
-load_dotenv()
+load_dotenv(override=True)
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = Flask(__name__)
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = False
 app.secret_key = os.getenv("FLASK_SECRET_KEY")
 APP_PASSCODE = os.getenv("APP_PASSCODE")
 
@@ -37,14 +39,14 @@ def login():
         passcode = request.form.get("passcode", "")
         if passcode == APP_PASSCODE:
             session["authenticated"] = True
-            return redirect(url_for("index"))
+            return redirect("/")
         flash("Code incorrect.")
     return render_template("login.html")
 
 @app.route("/", methods=["GET", "POST"])
 def index():
     if not session.get("authenticated"):
-        return redirect(url_for("login"))
+        return redirect("/login")
     if request.method == "POST":
         keyword = request.form["keyword"]
         response = generate_response(keyword)
@@ -55,7 +57,7 @@ def index():
             commande = "Commande non trouvée"
         session['commande'] = commande
         session['keyword'] = keyword
-        return redirect(url_for('index'))
+        return redirect("/")
     chemin = session.pop('chemin', "")
     commande = session.pop('commande', "")
     keyword = ""
